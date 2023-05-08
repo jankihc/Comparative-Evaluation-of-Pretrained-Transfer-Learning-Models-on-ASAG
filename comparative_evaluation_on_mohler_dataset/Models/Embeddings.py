@@ -1,6 +1,6 @@
 from nltk.tokenize import word_tokenize
-from allennlp.commands.elmo import ElmoEmbedder
-from bert_embedding import BertEmbedding
+# from allennlp.commands.elmo import ElmoEmbedder
+# from bert_embedding import BertEmbedding
 
 import torch
 
@@ -76,25 +76,25 @@ class Embedding2Array:
                 self.tokenized_sent = sentence
 
 
-        def get_elmo_embedding(self):
-            '''Creates ELMo word embeddings for the given words
-            param: list, list
-            returns: ndarray, ndarray
-              Returns the ELMo embeddings of the tokens of two sentences'''
+        # def get_elmo_embedding(self):
+        #     '''Creates ELMo word embeddings for the given words
+        #     param: list, list
+        #     returns: ndarray, ndarray
+        #       Returns the ELMo embeddings of the tokens of two sentences'''
 
-            elmo = ElmoEmbedder()
-            elmo_embedding = elmo.embed_sentence(self.tokenized_sent)
+        #     elmo = ElmoEmbedder()
+        #     elmo_embedding = elmo.embed_sentence(self.tokenized_sent)
 
-            return elmo_embedding
+        #     return elmo_embedding
 
-        def get_bert_embedding(self):
-            '''Creates word embeddings taken from BERT language representation
-            returns: list, list
-              Returns the BERT embeddings of the tokens of two sentences'''
+        # def get_bert_embedding(self):
+        #     '''Creates word embeddings taken from BERT language representation
+        #     returns: list, list
+        #       Returns the BERT embeddings of the tokens of two sentences'''
 
-            bert_embedding = BertEmbedding().embedding(sentences=self.tokenized_sent)
+        #     bert_embedding = BertEmbedding().embedding(sentences=self.tokenized_sent)
 
-            return bert_embedding
+        #     return bert_embedding
 
         def get_gpt_embedding(self):
             '''Creates word embeddings of GPT
@@ -105,7 +105,7 @@ class Embedding2Array:
             # tokenizer=torch.hub.load('huggingface/pytorch-pretrained-BERT', 'openAIGPTTokenizer', 'openai-gpt')
 
             tokenizer = torch.hub.load('huggingface/pytorch-transformers', 'tokenizer', 'openai-gpt')
-            model = torch.hub.load('huggingface/pytorch-transformers', 'modelWithLMHead', 'openai-gpt')
+            model = torch.hub.load('huggingface/pytorch-transformers', 'modelForCausalLM', 'openai-gpt')
 
             indexed_token = tokenizer.convert_tokens_to_ids(self.tokenized_sent)
             tokens_tensor = torch.tensor([indexed_token])
@@ -120,7 +120,7 @@ class Embedding2Array:
                 returns: tensor
             Returns the GPT2 embeddings of the tokens of two sentences'''
             tokenizer = torch.hub.load('huggingface/pytorch-transformers', 'tokenizer', 'gpt2')
-            model = torch.hub.load('huggingface/pytorch-transformers', 'modelWithLMHead', 'gpt2')
+            model = torch.hub.load('huggingface/pytorch-transformers', 'modelForCausalLM', 'gpt2')
 
             indexed_token = tokenizer.convert_tokens_to_ids(self.tokenized_sent)
             tokens_tensor = torch.tensor([indexed_token])

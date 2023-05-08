@@ -24,7 +24,8 @@ def pre_processing(ques, ans):
 
 if __name__ == '__main__':
 
-    df = pd.read_csv('dataset/mohler_dataset_edited.csv')
+    df = pd.read_csv('dataset/db_with_inserted_textual_mistakes_2.csv')
+    df =df[df['is_foreign'] == 1]
     # columns = ['Unnamed: 0', 'id', 'question', 'desired_answer', 'student_answer',
     # 'score_me', 'score_other', 'score_avg']
 
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     student_answers = df['student_answer'].to_list()
     gpt_similarity_score = {}
 
+    count = 0
     # For each student answer, get id, question, desired answer
     for stu_ans in student_answers:
         id = df.loc[df['student_answer'] == stu_ans, 'id'].iloc[0]
@@ -57,12 +59,15 @@ if __name__ == '__main__':
         text_2_embed = sentence_embed.gpt_sowe(word_array_2)
 
         gpt_similarity_score[stu_ans] = similarity_tools.get_cosine_similarity(text_1_embed, text_2_embed)
+        count += 1
+        if count == 10:
+            break
     print(gpt_similarity_score)
     # Saving similarity scores to json
-    with open('json_files/gpt_similarity_score.json', 'w') as fp:
-        json.dump(gpt_similarity_score, fp)
+    # with open('json_files/gpt_similarity_score_new.json', 'w') as fp:
+    #     json.dump(gpt_similarity_score, fp)
 
-    for answer in student_answers:
-        df.loc[df['student_answer'] == answer, 'gpt_sim_score'] = gpt_similarity_score[answer]
+    # for answer in student_answers:
+    #     df.loc[df['student_answer'] == answer, 'gpt_sim_score'] = gpt_similarity_score[answer]
 
-    df.to_csv('dataset/mohler_dataset_edited.csv')
+    # df.to_csv('dataset/db_with_inserted_textual_mistakes_2.csv')

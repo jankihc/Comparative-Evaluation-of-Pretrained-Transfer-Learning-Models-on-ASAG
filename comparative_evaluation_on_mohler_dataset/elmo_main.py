@@ -24,7 +24,7 @@ def pre_processing(ques, ans):
 
 if __name__ == '__main__':
 
-    df = pd.read_csv('dataset/mohler_dataset_edited.csv')
+    df = pd.read_csv('dataset/db_with_inserted_textual_mistakes.csv')
     # columns = ['Unnamed: 0', 'id', 'question', 'desired_answer', 'student_answer',
     # 'score_me', 'score_other', 'score_avg']
 
@@ -65,4 +65,4 @@ if __name__ == '__main__':
     for answer in student_answers:
         df.loc[df['student_answer'] == answer, 'elmo_sim_score'] = elmo_similarity_score[answer]
 
-    df.to_csv('dataset/mohler_dataset_edited.csv')
+    df.to_csv('dataset/db_with_inserted_textual_mistakes.csv')

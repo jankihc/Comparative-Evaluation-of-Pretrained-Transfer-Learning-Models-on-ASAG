@@ -24,7 +24,7 @@ def pre_processing(ques, ans):
 
 if __name__ == '__main__':
 
-    df = pd.read_csv('dataset/mohler_dataset_edited.csv')
+    df = pd.read_csv('dataset/db_with_inserted_textual_mistakes_2.csv')
     # columns = ['Unnamed: 0', 'id', 'question', 'desired_answer', 'student_answer',
     # 'score_me', 'score_other', 'score_avg']
 
@@ -59,10 +59,10 @@ if __name__ == '__main__':
         gpt2_similarity_score[stu_ans] = similarity_tools.get_cosine_similarity(text_1_embed, text_2_embed)
     print(gpt2_similarity_score)
     # Saving similarity scores to json
-    with open('json_files/gpt2_similarity_score.json', 'w') as fp:
+    with open('json_files/gpt2_similarity_score_new.json', 'w') as fp:
         json.dump(gpt2_similarity_score, fp)
 
     for answer in student_answers:
         df.loc[df['student_answer'] == answer, 'gpt2_sim_score'] = gpt2_similarity_score[answer]
 
-    df.to_csv('dataset/mohler_dataset_edited.csv')
+    df.to_csv('dataset/db_with_inserted_textual_mistakes_2.csv')
